@@ -1,8 +1,6 @@
 package com.fladev.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import com.fladev.exception.AutoDlException;
 import com.fladev.model.Constants;
 import com.fladev.model.Episode;
+import com.fladev.model.EpisodeFlags;
 
 public class JsonUtils {
 
@@ -59,7 +58,6 @@ public class JsonUtils {
 												e.setId(Math.toIntExact((Long) episode.get("id")));
 												e.setShowTitle((String) episode.get("show_title"));
 												e.setCode((String) episode.get("code"));
-												e.setSeen((Boolean) episode.get("seen"));
 												episodes.put(e.getId(), e);
 											}
 										}
@@ -76,8 +74,8 @@ public class JsonUtils {
 		return episodes;
 	}
 
-	public static HashMap<Integer, Boolean> getDowloadedFlags(String json) {
-		HashMap<Integer, Boolean> episodesDowloadedFlags = new HashMap<Integer, Boolean>();
+	public static HashMap<Integer, EpisodeFlags> getEpisodeFlags(String json) {
+		HashMap<Integer, EpisodeFlags> episodesDowloadedFlags = new HashMap<Integer, EpisodeFlags>();
 		try {
 			JSONParser parser = new JSONParser();
 			Object obj = parser.parse(json);
@@ -91,11 +89,17 @@ public class JsonUtils {
 							if (episodeObj instanceof JSONObject) {
 								JSONObject episode = (JSONObject) episodeObj;
 								int episodeId = Math.toIntExact((Long) episode.get("id"));
+								Boolean special = (Long) episode.get("special") == 1 ? true : false;
 								obj = episode.get("user");
 								if (obj instanceof JSONObject) {
 									JSONObject userInfo = (JSONObject) obj;
-									Boolean dowloaded = (Boolean) userInfo.get("downloaded");
-									episodesDowloadedFlags.put(episodeId, dowloaded);
+									Boolean seen = (Boolean) userInfo.get("seen");
+									Boolean downloaded = (Boolean) userInfo.get("downloaded");
+									EpisodeFlags flags = new EpisodeFlags();
+									flags.setSeen(seen);
+									flags.setDownloaded(downloaded);
+									flags.setSpecial(special);
+									episodesDowloadedFlags.put(episodeId, flags);
 								}
 							}
 						}
@@ -106,11 +110,17 @@ public class JsonUtils {
 						if (obj instanceof JSONObject) {
 							JSONObject episode = (JSONObject) obj;
 							int episodeId = Math.toIntExact((Long) episode.get("id"));
+							Boolean special = (Long) episode.get("special") == 1 ? true : false;
 							obj = episode.get("user");
 							if (obj instanceof JSONObject) {
 								JSONObject userInfo = (JSONObject) obj;
-								Boolean dowloaded = (Boolean) userInfo.get("downloaded");
-								episodesDowloadedFlags.put(episodeId, dowloaded);
+								Boolean seen = (Boolean) userInfo.get("seen");
+								Boolean downloaded = (Boolean) userInfo.get("downloaded");
+								EpisodeFlags flags = new EpisodeFlags();
+								flags.setSeen(seen);
+								flags.setDownloaded(downloaded);
+								flags.setSpecial(special);
+								episodesDowloadedFlags.put(episodeId, flags);
 							}
 						}
 					} else { // Case of no episodes

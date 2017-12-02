@@ -12,6 +12,7 @@ import com.fladev.model.BsCalendar;
 import com.fladev.model.BsCall;
 import com.fladev.model.Constants;
 import com.fladev.model.Episode;
+import com.fladev.model.EpisodeFlags;
 import com.fladev.utils.CallExecUtils;
 import com.fladev.utils.JsonUtils;
 import com.fladev.utils.PropertiesUtils;
@@ -45,16 +46,6 @@ public class BsService {
 		}
 	}
 
-	public String authenticateUser(String apiKey, String username, String password) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public BsCalendar getBsCalendar(String connexionToken, int monthOfYear) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Set<Episode> getEpisodesOfDay(LocalDate aStartDate, LocalDate aEndDate) {
 		Set<Episode> episodes = new TreeSet<Episode>();
 		LocalDate endDate = aEndDate != null ? aEndDate : aStartDate;
@@ -67,14 +58,26 @@ public class BsService {
 			}
 			episodesIds = episodesIds.substring(1);
 			BsCall episodeDetailCall = callBuilder.buildEpisodeDetailCall(token, episodesIds);
-			HashMap<Integer, Boolean> dlFlags = JsonUtils
-					.getDowloadedFlags(CallExecUtils.executeCall(episodeDetailCall));
+			HashMap<Integer, EpisodeFlags> flags = JsonUtils
+					.getEpisodeFlags(CallExecUtils.executeCall(episodeDetailCall));
+			EpisodeFlags defaultFlags = new EpisodeFlags(false, false, false);
 			for (int key : episodesMap.keySet()) {
-				episodesMap.get(key).setDownloaded(dlFlags.getOrDefault(key, false));
+				episodesMap.get(key).setFlags(flags.getOrDefault(key, defaultFlags));
 				episodes.add(episodesMap.get(key));
 			}
 		}
 		return episodes;
 	}
 
+	public void markEpisodeAsDownloaded(Episode episode) {
+		throw new UnsupportedOperationException();
+	}
+
+	public String authenticateUser(String apiKey, String username, String password) {
+		throw new UnsupportedOperationException();
+	}
+
+	public BsCalendar getBsCalendar(String connexionToken, int monthOfYear) {
+		throw new UnsupportedOperationException();
+	}
 }

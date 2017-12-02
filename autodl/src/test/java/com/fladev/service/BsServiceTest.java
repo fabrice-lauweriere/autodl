@@ -11,7 +11,7 @@ public class BsServiceTest extends TestCase{
 	@Test
 	public void test_getEpisodes() {
 		BsService service = new BsService();
-		LocalDate start = LocalDate.now();
+		LocalDate start = LocalDate.of(2016, 12, 14);
 		System.out.println(service.getEpisodesOfDay(start, null));
 	}
 }
