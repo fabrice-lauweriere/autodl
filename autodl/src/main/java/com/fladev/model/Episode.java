@@ -1,17 +1,11 @@
 package com.fladev.model;
 
-public class Episode {
-	private String TvShowName;
-	private int seasonNbr;
-	private int episodeNbr;
-	private boolean retrieved;
-	private boolean viewed;
-	
-	
-	
-	
-	
-	
+public class Episode implements Comparable<Episode> {
+	private int id;
+	private String showTitle;
+	private String code;
+	private boolean seen;
+	private boolean downloaded;
 	
 	
 	
@@ -20,34 +14,53 @@ public class Episode {
 	
 	
 	// Getters and Setters
-	public String getTvShowName() {
-		return TvShowName;
+	public int getId() {
+		return id;
 	}
-	public int getSeasonNbr() {
-		return seasonNbr;
+	public String getShowTitle() {
+		return showTitle;
 	}
-	public int getEpisodeNbr() {
-		return episodeNbr;
+	public String getCode() {
+		return code;
 	}
-	public boolean isRetrieved() {
-		return retrieved;
+	public boolean isSeen() {
+		return seen;
 	}
-	public boolean isViewed() {
-		return viewed;
+	public boolean isDownloaded() {
+		return downloaded;
 	}
-	public void setTvShowName(String tvShowName) {
-		TvShowName = tvShowName;
+	public void setId(int id) {
+		this.id = id;
 	}
-	public void setSeasonNbr(int seasonNbr) {
-		this.seasonNbr = seasonNbr;
+	public void setShowTitle(String showTitle) {
+		this.showTitle = showTitle;
 	}
-	public void setEpisodeNbr(int episodeNbr) {
-		this.episodeNbr = episodeNbr;
+	public void setCode(String code) {
+		this.code = code;
 	}
-	public void setRetrieved(boolean retrieved) {
-		this.retrieved = retrieved;
+	public void setSeen(boolean seen) {
+		this.seen = seen;
 	}
-	public void setViewed(boolean viewed) {
-		this.viewed = viewed;
+	public void setDownloaded(boolean downloaded) {
+		this.downloaded = downloaded;
 	}
+	public int compareTo(Episode e2) {
+		int result = 0;
+		if (this.getId() == e2.getId()) {
+			result = 0;
+		} else if (this.getShowTitle().equals(e2.getShowTitle())){
+			result = this.getCode().compareTo(e2.getCode());
+		} else {
+			result = this.getShowTitle().compareTo(e2.getShowTitle());
+		}
+		return result;
+	}
+	@Override
+	public String toString() {
+		return "Episode " + id + "\n"+
+					"\t" + showTitle + " " + code + 
+					"\n\t seen=" + seen + ", dl=" + downloaded + "\n";
+	}
+	
+
 }

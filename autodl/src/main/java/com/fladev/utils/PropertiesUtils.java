@@ -5,14 +5,17 @@ import java.io.IOException;
 import java.util.Properties;
 
 import com.fladev.exception.AutoDlException;
+import com.fladev.model.Constants;
 
 public class PropertiesUtils {
-	public static Properties loadPropertiesFile(String aFileName) {
-		Properties iProperties = new Properties();
+	
+	public static Properties properties = new Properties();
+	
+	private static void loadPropertiesFile() {
 		FileInputStream input = null;
 		try {
-			input = new FileInputStream(".\\src\\main\\resources\\".concat(aFileName));
-			iProperties.load(input);
+			input = new FileInputStream(".\\src\\main\\resources\\".concat(Constants.APPLICATION_PROPERTIES_FILE_NAME));
+			properties.load(input);
 			input.close();
 		} catch (IOException e) {
 			if (input != null) {
@@ -24,6 +27,12 @@ public class PropertiesUtils {
 			}
 			throw new AutoDlException(e.getLocalizedMessage(), e);
 		} 
-		return iProperties;
+	}
+	
+	public static Properties getProperties() {
+		if (properties.isEmpty()) {
+			loadPropertiesFile();
+		}
+		return properties;
 	}
 }

@@ -10,7 +10,7 @@ public class PropertiesUtilsTest extends TestCase {
 
 	@Test
 	public void test_propertiesLoading() {
-		Properties p = PropertiesUtils.loadPropertiesFile("autodl.properties");
+		Properties p = PropertiesUtils.getProperties();
 		assertEquals("046e30540ce7",p.getProperty("bs.api.key"));
 	}
 }
